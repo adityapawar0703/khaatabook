@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const userModel = require('./Models/userModel')
+const db = require('./config/mongoose-connection')
 
 app.set("view engine","ejs")
 app.use(express.json())
