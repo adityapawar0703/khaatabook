@@ -1,11 +1,14 @@
 const express = require('express');
-const { LoginController } = require('../controllers/indexController');
+const { LoginController, Auth } = require('../controllers/indexController');
 const { createController } = require('../controllers/indexController');
 
 const router = express.Router()
 
 
-router.get('/login',LoginController)
+router.get('/',LoginController)
+router.post('/login',Auth)
+
+
 router.get('/createnew', createController)
 
 

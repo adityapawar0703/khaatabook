@@ -1,0 +1,23 @@
+<form action="/created" method="post" name="create_new" class="flex flex-col gap-4 items-center">
+
+    <h1 class="font-semibold mb-1 text-[18px] mr-16">Create New Account</h1>
+
+    <input type="text" placeholder="username" name="username"
+        class="h-[5.2vh] w-[18vw] px-2 rounded-lg bg-gray-100 py-1 border-[1.5px] border-solid border-gray-300"
+        pattern="[a-zA-Z0-9]{4,}" title="Username must contain at least 4 alphanumeric characters" required>
+    
+    <input type="text" placeholder="Name" name="name"
+        class="h-[5.2vh] w-[18vw] px-2 rounded-lg bg-gray-100 py-1 border-[1.5px] border-solid border-gray-300"
+        pattern="[a-zA-Z\s]+" title="Name must only contain letters and spaces" required>
+
+    <input type="email" placeholder="Email" name="email"
+        class="h-[5.2vh] w-[18vw] px-2 rounded-lg bg-gray-100 py-1 border-[1.5px] border-solid border-gray-300"
+        required>
+
+    <input type="password" placeholder="Password" name="password"
+        class="h-[5.2vh] w-[18vw] px-2 rounded-lg bg-gray-100 py-1 border-solid border-[1.5px] border-gray-300"
+        pattern=".{6,}" title="Password must be at least 6 characters long" required>
+
+    <input type="submit" value="Create"
+        class="bg-blue-500 px-4 py-1 h-10 w-24 text-white font-semibold text-center rounded-lg">
+</form>
