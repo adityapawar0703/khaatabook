@@ -27,6 +27,34 @@ module.exports.Auth =async function(req,res){
 
 
 
-module.exports.createController = function(req,res){
+module.exports.createpageController = function(req,res){
     res.render("create")
+}
+
+module.exports.create_newuser = async function(req,res){
+    let {name,email, username,password} = req.body;
+   let user = await userModel.findOne({username,email});
+   if(user) return res.send("user already exist");
+
+    bcrypt.genSalt(10,function(err,salt){
+        bcrypt.hash(password, salt , function(err, hash){
+        user =  userModel.create({
+                name,
+                email,
+                username,
+                password:hash,
+              })
+        })
+    })
+
+    jwt.sign({username,email},"secretkey",function(err,token){
+        if(err) return res.send("internal server error")
+            res.cookie("token",token)
+        res.send("created and loggedin")
+    })
+}
+
+module.exports.LogoutController = function(req,res){
+    res.cookie("token","")
+    res.send("logout successfull")
 }

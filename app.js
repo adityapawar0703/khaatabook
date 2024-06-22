@@ -37,6 +37,7 @@ app.use('/',indexRouter)
 //   }) 
 
 // })
+
 app.get('/test',(req,res)=>{
     res.render("create")
 })
