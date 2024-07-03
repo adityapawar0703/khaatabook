@@ -1,60 +1,76 @@
-const userModel = require("../Models/userModel")
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
+const userModel = require('../models/userModel')
+const hisaabModel = require('../models/hisaabModel')
+const jwt = require('jsonwebtoken')
+const { setDriver } = require('mongoose')
 
-module.exports.LoginController = function(req,res){
-    res.render("loginpage")
+module.exports.LandingPageController = function(req,res){
+    res.render("index",{loggedin:false})
 }
 
-module.exports.Auth =async function(req,res){
+
+module.exports.LoginController =async function(req,res){
     let {email, password} = req.body;
-   let user = await userModel.findOne({email})
-   if(!user) return res.send("wrong email")
+   let user = await  userModel.findOne({email}).select("+password");
+   if(!user) return res.send('no such email')
+  
+  try{
+    let result = await bcrypt.compare(password, user.password)
 
-    bcrypt.compare(password, user.password, function(err,result){
-        if(err) return res.send("error in line 13")
-            if(!result) return res.send("wrong password")
-               
-                jwt.sign({id:user._id, email},"secretkey", function(err,token){
-                    if(err)  return res.send("error in line 20")
-                        res.cookie("token",token)
-                       res.send("loggedin token generated")
-                })
-                
-     })
+    if(!result) return res.send("wrong password")
+   
+     let token = await jwt.sign({id:user._id, email:user.email},process.env.JWT_KEY)
+     res.cookie("token",token)
+     res.redirect('/profile')
+  }
+  catch(err){
+    res.send(err.message)
+  }
+    
+}
+
+module.exports.RegisterController =function(req,res){
+    res.render("register")
 }
 
 
+module.exports.PostRegisterController =async function(req,res){
+   let {username, email, name, password} = req.body;
 
-module.exports.createpageController = function(req,res){
-    res.render("create")
-}
+  try{
+    let user = await userModel.findOne({email})
+  if(user) return res.send("already have an account pls login")
 
-module.exports.create_newuser = async function(req,res){
-    let {name,email, username,password} = req.body;
-   let user = await userModel.findOne({username,email});
-   if(user) return res.send("user already exist");
+    let salt =await bcrypt.genSalt(10);
+    let hashed =await bcrypt.hash(password, salt);
+  user = await userModel.create({
+        username,
+        email,
+        name,
+        password:hashed,
 
-    bcrypt.genSalt(10,function(err,salt){
-        bcrypt.hash(password, salt , function(err, hash){
-        user =  userModel.create({
-                name,
-                email,
-                username,
-                password:hash,
-              })
-        })
     })
 
-    jwt.sign({username,email},"secretkey",function(err,token){
-        if(err) return res.send("internal server error")
-            res.cookie("token",token)
-        res.send("created and loggedin")
-    })
+   let token = await jwt.sign({id: user._id, email:user.email},process.env.JWT_KEY)
+   res.cookie("token",token)
+   res.render("profile")
+  }
+  catch(err){
+    res.send(err.message);
+  }
+
 }
+
 
 module.exports.LogoutController = function(req,res){
     res.cookie("token","")
-    res.send("logout successfull")
+    res.send("loggedout")
+}
+
+
+module.exports.ProfileController =async function(req,res){
+ let user = await userModel.findOne({email:req.user.email}).populate("hisaab")
+ 
+  res.render("profile",{user})
 }

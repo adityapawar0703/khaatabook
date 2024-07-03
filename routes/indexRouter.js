@@ -1,17 +1,18 @@
 const express = require('express');
-const { LoginController, Auth, create_newuser, LogoutController } = require('../controllers/indexController');
-const { createpageController } = require('../controllers/indexController');
 
+const { LandingPageController, LoginController, RegisterController, LogoutController, PostRegisterController, ProfileController } = require('../controllers/indexController');
+const { IsloggedIn, redirectIfloggedIn } = require('../middlewares/auth-middleware');
 const router = express.Router()
 
+router.get('/',redirectIfloggedIn,LandingPageController)
+router.post('/login',LoginController)
 
-router.get('/',LoginController)
-router.post('/login',Auth)
-
-
-router.get('/createnew', createpageController)
-router.post('/created',create_newuser)
+router.get('/register',RegisterController)
+router.post('/register',PostRegisterController)
 
 router.get('/logout',LogoutController)
 
-module.exports = router
+router.get('/profile',IsloggedIn,ProfileController)
+
+
+module.exports = router;

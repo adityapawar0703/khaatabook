@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-const { type } = require('os')
 
-// mongoose.connect("mongodb://127.0.0.1:27017/khatabook")
+
+
 
 const userSchema = mongoose.Schema({
     username:{
@@ -18,6 +18,10 @@ const userSchema = mongoose.Schema({
         required: true,
         trim :true,
     },
+    porfile_picture:{
+        type:String,
+        trim:true,
+    },
     email:{
         type:String,
         unique:true,
@@ -30,11 +34,11 @@ const userSchema = mongoose.Schema({
         minlenght: 6,
         trim: true,
         required: true,
+        select:false,
     },
-    hisaabs:{
-        type:Array,
-        default: []
-    }
+
+    hisaab:[{type: mongoose.Schema.Types.ObjectId, ref: "hisaab"} ]
+
 })
 
 module.exports = mongoose.model("user",userSchema)
