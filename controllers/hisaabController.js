@@ -95,3 +95,23 @@ module.exports.EditHisaabController =async function(req,res){
   let hisaab = await hisaabModel.findOne({_id:req.params.id})
  res.render("edit-hisaab",{hisaab})
  }
+
+ module.exports.UpdateHisaabController = async function(req,res){
+  let {title , description,encrypted, shareable,editeable,passcode} = req.body;
+  encrypted = encrypted ==="on" ? true : false
+  shareable= shareable ==="on" ? true : false
+   editeable = editeable ==="on" ? true : false
+    try {
+      let user = await hisaabModel.findOneAndUpdate({
+        title,
+        description,
+        editeable,
+        shareable,
+        encrypted,
+        passcode,
+       })
+     res.redirect('/profile')
+    } catch (err) {
+      res.redirect('/profile')
+    }
+ }
