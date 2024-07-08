@@ -31,7 +31,7 @@ module.exports.LoginController =async function(req,res){
 }
 
 module.exports.RegisterController =function(req,res){
-    res.render("register")
+    res.render("register",{loggedin:false})
 }
 
 
@@ -54,7 +54,7 @@ module.exports.PostRegisterController =async function(req,res){
 
    let token = await jwt.sign({id: user._id, email:user.email},process.env.JWT_KEY)
    res.cookie("token",token)
-   res.render("profile")
+   res.render("profile",{user})
   }
   catch(err){
     res.send(err.message);

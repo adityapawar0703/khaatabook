@@ -17,9 +17,12 @@ app.use(express.static(path.join(__dirname,"public")))
 app.use(cookieParser())
 
 const indexRouter = require('./routes/indexRouter')
+const hisaabRouter = require('./routes/hisaabRouter')
+
 
 app.use('/',indexRouter)
 
+app.use('/hisaab/',hisaabRouter)
 
 
 

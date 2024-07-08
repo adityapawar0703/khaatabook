@@ -4,19 +4,19 @@
             <h2 class="text-2xl font-semibold mb-4">Create New Hisaab</h2>
             <form action="/hisaab/create" method="post">
                 <div class="mb-4">
-                    <input autocomplete="off" name="title" type="text" placeholder="Shopping Hisaab, Ghar ka Kharch..."
+                    <input autocomplete="off" name="title" type="text" value="<%= hisaab.title %>"
                         class="w-full p-2 border border-gray-300 rounded">
                 </div>
                 <div class="mb-4">
                     <textarea name="description" placeholder="Daal, Aata, Cheeni"
-                        class="resize-none w-full p-2 border border-gray-300 rounded h-32"></textarea>
+                        class="resize-none w-full p-2 border border-gray-300 rounded h-32"> <%= hisaab.description %></textarea>
                 </div>
                 <div class="mb-4">
                     <label class="inline-flex items-center">
                         <input name="encrypted" type="checkbox" class="form-checkbox">
                         <span class="ml-2">Encrypt this file</span>
                     </label>
-                    <input name="passcode" type="password" placeholder="Passcode"
+                    <input name="passcode" type="password" value="<%=hisaab.passcode %>"
                         class="w-full mt-2 p-2 border border-gray-300 rounded">
                 </div>
                 <div class="mb-4">

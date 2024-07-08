@@ -8,7 +8,7 @@ const hisaabSchema = mongoose.Schema({
         minlength:3,
         maxlength:100,
     },
-    data:{
+    description:{
         type:String,
         trim:true,
         required:true,
@@ -35,7 +35,7 @@ const hisaabSchema = mongoose.Schema({
         default:"",
     },
 },
-{  timestmaps: true}
+{  timestamps: true}
 );
 
 module.exports = mongoose.model("hisaab",hisaabSchema)
