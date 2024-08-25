@@ -36,4 +36,4 @@ app.use('/',indexRouter)
 app.use('/hisaab/',hisaabRouter)
 
 
-app.listen(3000)
+app.listen(process.env.PORT||3000)
