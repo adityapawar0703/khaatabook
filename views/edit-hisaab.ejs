@@ -2,7 +2,7 @@
     <div class="container mx-auto p-6">
         <div class="max-w-lg mx-auto bg-white p-6 border border-gray-300 rounded-lg shadow-md">
             <h2 class="text-2xl font-semibold mb-4">Update Hisaab</h2>
-            <form action="/hisaab/updated" method="post">
+            <form action="/hisaab/edited/<%=hisaab._id%>" method="post">
                 <div class="mb-4">
                     <input autocomplete="off" name="title" type="text" value="<%= hisaab.title %>"
                         class="w-full p-2 border border-gray-300 rounded">
@@ -13,7 +13,10 @@
                 </div>
                 <div class="mb-4">
                     <label class="inline-flex items-center">
-                        <input name="encrypted" type="checkbox" class="form-checkbox">
+                        <input <% if(hisaab.encrypted){ %> 
+                           checked
+                           <%  } %>
+                             name="encrypted" type="checkbox" class="form-checkbox">
                         <span class="ml-2">Encrypt this file</span>
                     </label>
                     <input name="passcode" type="password" value="<%=hisaab.passcode %>"
@@ -21,13 +24,20 @@
                 </div>
                 <div class="mb-4">
                     <label class="inline-flex items-center">
-                        <input name="shareable" type="checkbox" class="form-checkbox" >
+                        <input <% if(hisaab.shareable){ %> 
+                            checked
+                            <%  } %>
+                             name="shareable" type="checkbox" class="form-checkbox" >
                         <span class="ml-2">Shareable file?</span>
                     </label>
                 </div>
                 <div class="mb-4">
                     <label class="inline-flex items-center">
-                        <input name="editeable" type="checkbox" class="form-checkbox">
+                        <input 
+                        <% if(hisaab.editeable){ %> 
+                            checked
+                            <%  } %>
+                        name="editeable" type="checkbox" class="form-checkbox">
                         <span class="ml-2">Edit permissions.</span>
                     </label>
                 </div>

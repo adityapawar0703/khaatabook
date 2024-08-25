@@ -3,10 +3,12 @@ const cookieParser = require('cookie-parser')
 const userModel = require('../models/userModel')
 const hisaabModel = require('../models/hisaabModel')
 const jwt = require('jsonwebtoken')
+
 const { setDriver } = require('mongoose')
+// const { options } = require('../routes/indexRouter')
 
 module.exports.LandingPageController = function(req,res){
-    res.render("index",{loggedin:false})
+    res.render("index",{loggedin:false});
 }
 
 
@@ -18,11 +20,18 @@ module.exports.LoginController =async function(req,res){
   try{
     let result = await bcrypt.compare(password, user.password)
 
-    if(!result) return res.send("wrong password")
+    if(!result) {
+      // return res.send("wrong password")
+      req.flash('error','wrong password')
+
+      return res.send("wrong password")
+    } 
    
      let token = await jwt.sign({id:user._id, email:user.email},process.env.JWT_KEY)
      res.cookie("token",token)
-     res.redirect('/profile')
+     req.flash('error','Loggedin Successfully')
+     return res.redirect('/profile')
+    //  res.redirect('/profile')
   }
   catch(err){
     res.send(err.message)
@@ -70,7 +79,17 @@ module.exports.LogoutController = function(req,res){
 
 
 module.exports.ProfileController =async function(req,res){
- let user = await userModel.findOne({email:req.user.email}).populate("hisaab")
+  let byDate = Number(req.query.byDate)
+let {startDate , endDate} = req.query;
+    byDate = byDate ? byDate : -1;
+    startDate = startDate ? startDate : new Date("2004-03-07");
+    endDate = endDate ? endDate : new Date();
+
+ let user = await userModel.findOne({email:req.user.email}).populate({
+  path:"hisaab",
+  match:{createdAt :{$gte:startDate,$lte:endDate}},
+  options: {sort: {createdAt: byDate }},
+ })
  
   res.render("profile",{user})
 }
