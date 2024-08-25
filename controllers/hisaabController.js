@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const cookieParser = require('cookie-parser')
-const userModel = require('../models/userModel')
-const hisaabModel = require('../models/hisaabModel')
+const userModel = require('../Models/userModel')
+const hisaabModel = require('../Models/hisaabModel')
 const jwt = require('jsonwebtoken')
 const { setDriver } = require('mongoose')
 
